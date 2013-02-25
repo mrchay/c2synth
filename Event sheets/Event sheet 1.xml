@@ -1,0 +1,1727 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Event sheet 1</name>
+    <events>
+        <variable constant="0" name="g_mode" static="0" type="text">free</variable>
+        <variable constant="0" name="g_dragging" static="0" type="number">0</variable>
+        <variable constant="0" name="g_nStep" static="0" type="number">0</variable>
+        <variable constant="0" name="g_nSynth" static="0" type="number">0</variable>
+        <variable constant="0" name="g_bpm" static="0" type="number">120</variable>
+        <variable constant="0" name="g_keyboardKeys" static="0" type="text">zsxdcvgbhnjm,l.q2w3er5t6y7u</variable>
+        <variable constant="0" name="g_KeyboardCodes" static="0" type="text">90|83|88|68|67|86|71|66|72|78|74|77|188|76|190|81|50|87|51|69|82|53|84|54|89|55|85</variable>
+        <variable constant="0" name="g_synthParams" static="0" type="text">osc1_oct,osc1_det,osc1_xenv,osc1_vol,osc1_waveform,osc2_oct,osc2_det,osc2_xenv,osc2_vol,osc2_waveform,noise_fader,env_attack,env_sustain,env_release,env_master,fx_filter,fx_freq,fx_resonance,fx_delay_time,fx_delay_amt,fx_pan_freq,fx_pan_amt,lfo_osc1_freq,lfo_fx_freq,lfo_freq,lfo_amt,lfo_waveform,sample_len</variable>
+        <variable constant="0" name="g_synthParams2" static="0" type="text">osc1_oct,osc1_det,osc1_xenv,osc1_vol,osc1_waveform,osc2_oct,osc2_det,osc2_xenv,osc2_vol,osc2_waveform,noise_fader,env_attack,env_sustain,env_release,env_master,fx_filter,fx_freq,fx_resonance,fx_delay_time,fx_delay_amt,fx_pan_freq,fx_pan_amt,lfo_osc1_freq,lfo_fx_freq,lfo_freq,lfo_amt,lfo_waveform,sample_len</variable>
+        <event-group collapsed="1" description="" title="javascript inject">
+            <sub-events>
+                <event-block>
+                    <conditions>
+                        <condition id="0" name="On function" type="Function">
+                            <param id="0" name="Name">&quot;Execute&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Execute" type="CallJS">
+                            <param id="0" name="Value">Function.Param(0)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block>
+                    <conditions>
+                        <condition id="0" name="On function" type="Function">
+                            <param id="0" name="Name">&quot;Call&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Execute" type="CallJS">
+                            <param id="0" name="Value">Function.Param(0)</param>
+                        </action>
+                        <action id="1" name="Set return value" type="Function">
+                            <param id="0" name="Value">CallJS.ReadExecutionReturn</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block>
+                    <conditions>
+                        <condition id="0" name="On function" type="Function">
+                            <param id="0" name="Name">&quot;Test&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" type="Function">
+                            <param id="0" name="Name">&quot;Execute&quot;</param>
+                            <param id="1" name="Parameter {n}">&quot;injectedTest()&quot;</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-group>
+        <event-group description="" title="Synth">
+            <sub-events>
+                <event-block>
+                    <conditions>
+                        <condition id="0" name="On function" type="Function">
+                            <param id="0" name="Name">&quot;SetAndPlayNote&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-8" name="Compare two values" type="System">
+                                    <param id="0" name="First value">Function.Param(0)</param>
+                                    <param id="1" name="Comparison">1</param>
+                                    <param id="2" name="Second value">-1</param>
+                                </condition>
+                                <condition id="0" name="Compare at X" type="SynthMuteArray">
+                                    <param id="0" name="X">g_nSynth</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">0</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="0" name="Call function" type="Function">
+                                    <param id="0" name="Name">&quot;Execute&quot;</param>
+                                    <param id="1" name="Parameter {n}">&quot;sampler.playNoteOnSynth(&quot;&amp;g_nSynth&amp;&quot;,&quot;&amp;Function.Param(0)&amp;&quot;)&quot;</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <comment>if playing at the moment, set the current step to the played note</comment>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">&quot;playing&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Call function" type="Function">
+                                            <param id="0" name="Name">&quot;SetStep&quot;</param>
+                                            <param id="1" name="Parameter {n}">g_nStep{###}Function.Param(0)</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <comment>if setting a step, set the current step then mode back to free</comment>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">&quot;setstep&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Call function" type="Function">
+                                            <param id="0" name="Name">&quot;SetStep&quot;</param>
+                                            <param id="1" name="Parameter {n}">g_nStep{###}Function.Param(0)</param>
+                                        </action>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Value">&quot;free&quot;</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <event-block>
+                    <conditions>
+                        <condition id="0" name="On function" type="Function">
+                            <param id="0" name="Name">&quot;PlayNote&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-8" name="Compare two values" type="System">
+                                    <param id="0" name="First value">Function.Param(1)</param>
+                                    <param id="1" name="Comparison">1</param>
+                                    <param id="2" name="Second value">-1</param>
+                                </condition>
+                                <condition id="0" name="Compare at X" type="SynthMuteArray">
+                                    <param id="0" name="X">Function.Param(0)</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">0</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="0" name="Call function" type="Function">
+                                    <param id="0" name="Name">&quot;Execute&quot;</param>
+                                    <param id="1" name="Parameter {n}">&quot;sampler.playNoteOnSynth(&quot;&amp;Function.Param(0)&amp;&quot;,&quot;&amp;Function.Param(1)&amp;&quot;)&quot;</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <event-block collapsed="1">
+                    <conditions>
+                        <condition id="0" name="On function" type="Function">
+                            <param id="0" name="Name">&quot;SetSynth&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" type="System">
+                            <param id="0" name="Variable">g_nSynth</param>
+                            <param id="1" name="Value">Function.Param(0)</param>
+                        </action>
+                        <action id="0" name="Set text" type="SynthNumber">
+                            <param id="0" name="Text">&quot;&quot;&amp;(g_nSynth+1)</param>
+                        </action>
+                        <action id="5" name="Set frame" type="SynthMute">
+                            <param id="0" name="Frame number">SynthMuteArray.At(g_nSynth)</param>
+                        </action>
+                        <action id="0" name="Call function" type="Function">
+                            <param id="0" name="Name">&quot;RecallPattern&quot;</param>
+                            <param id="1" name="Parameter {n}">CurrentPattern.At(g_nSynth)</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <comment>setup the knobs</comment>
+                        <event-block>
+                            <conditions>
+                                <condition id="-10" name="For" type="System">
+                                    <param id="0" name="Name">&quot;t&quot;</param>
+                                    <param id="1" name="Start index">0</param>
+                                    <param id="2" name="End index">tokencount(g_synthParams,&quot;,&quot;)</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-7" name="Compare instance variable" type="Knob">
+                                            <param id="0" name="Instance variable">name</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">tokenat(g_synthParams,loopindex(&quot;t&quot;),&quot;,&quot;)</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Call function" type="Function">
+                                            <param id="0" name="Name">&quot;SetKnobValue&quot;</param>
+                                            <param id="1" name="Parameter {n}">Knob.name</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                        <comment>setup the tabs</comment>
+                        <event-block>
+                            <conditions>
+                                <condition id="-11" name="For Each" type="System">
+                                    <param id="0" name="Object">SynthTab</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="5" name="Set frame" type="SynthTab">
+                                    <param id="0" name="Frame number">0</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-7" name="Compare instance variable" type="SynthTab">
+                                            <param id="0" name="Instance variable">synth</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">g_nSynth</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="5" name="Set frame" type="SynthTab">
+                                            <param id="0" name="Frame number">1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>loaded (add a sec for our script to have loaded)</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="-25" name="On loading finished" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-16" name="Wait" type="System">
+                            <param id="0" name="Seconds">1.0</param>
+                        </action>
+                        <action id="0" name="Call function" type="Function">
+                            <param id="0" name="Name">&quot;SetSynth&quot;</param>
+                            <param id="1" name="Parameter {n}">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>construct mute array</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="-25" name="On loading finished" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Set size" type="SynthMuteArray">
+                            <param id="0" name="Width">10</param>
+                            <param id="1" name="Height">1</param>
+                            <param id="2" name="Depth">1</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-10" name="For" type="System">
+                                    <param id="0" name="Name">&quot;t&quot;</param>
+                                    <param id="1" name="Start index">0</param>
+                                    <param id="2" name="End index">9</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="2" name="Set at X" type="SynthMuteArray">
+                                    <param id="0" name="X">loopindex(&quot;t&quot;)</param>
+                                    <param id="1" name="Value">loopindex(&quot;t&quot;)=0?0:1</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>move between different synths</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="3" name="On touched object" type="Touch">
+                            <param id="0" name="Object">SynthTab</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" type="Function">
+                            <param id="0" name="Name">&quot;SetSynth&quot;</param>
+                            <param id="1" name="Parameter {n}">SynthTab.synth</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block>
+                    <conditions>
+                        <condition id="3" name="On touched object" type="Touch">
+                            <param id="0" name="Object">SynthMute</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="3" name="Compare frame" type="SynthMute">
+                                    <param id="0" name="Comparison">0</param>
+                                    <param id="1" name="Number">0</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="5" name="Set frame" type="SynthMute">
+                                    <param id="0" name="Frame number">1</param>
+                                </action>
+                                <action id="2" name="Set at X" type="SynthMuteArray">
+                                    <param id="0" name="X">g_nSynth</param>
+                                    <param id="1" name="Value">1</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block>
+                            <conditions>
+                                <condition id="-22" name="Else" type="System" />
+                            </conditions>
+                            <actions>
+                                <action id="5" name="Set frame" type="SynthMute">
+                                    <param id="0" name="Frame number">0</param>
+                                </action>
+                                <action id="2" name="Set at X" type="SynthMuteArray">
+                                    <param id="0" name="X">g_nSynth</param>
+                                    <param id="1" name="Value">0</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-group>
+        <event-group collapsed="1" description="" title="Knob">
+            <sub-events>
+                <comment>start dragging knob</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="0" name="On any touch start" type="Touch" />
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" type="Knob">
+                            <param id="0" name="Instance variable">touch</param>
+                            <param id="1" name="Value">-1</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <comment>set corresponding synth param</comment>
+                        <event-block>
+                            <conditions>
+                                <condition id="4" name="Is touching object" type="Touch">
+                                    <param id="0" name="Object">Knob</param>
+                                </condition>
+                                <condition id="1" name="Is overlapping another object" type="Knob">
+                                    <param id="0" name="Object">Synth</param>
+                                </condition>
+                                <condition id="-9" name="Is visible" type="Synth" />
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" type="System">
+                                    <param id="0" name="Variable">g_dragging</param>
+                                    <param id="1" name="Value">1</param>
+                                </action>
+                                <action id="-10" name="Set value" type="Knob">
+                                    <param id="0" name="Instance variable">touch</param>
+                                    <param id="1" name="Value">Touch.TouchIndex</param>
+                                </action>
+                                <action id="0" name="Call function" type="Function">
+                                    <param id="0" name="Name">&quot;Execute&quot;</param>
+                                    <param id="1" name="Parameter {n}">&quot;sampler.setSynthParam(&quot;&amp;g_nSynth&amp;&quot;,&apos;&quot;&amp;Knob.name&amp;&quot;&apos;,&quot;&amp;Knob.value&amp;&quot;)&quot;</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>during movement of knob</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="2" name="Is in touch" type="Touch" />
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-7" name="Compare instance variable" type="Knob">
+                                    <param id="0" name="Instance variable">touch</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">Touch.TouchIndex</param>
+                                </condition>
+                                <condition disabled="1" id="4" inverted="1" name="Is touching object" type="Touch">
+                                    <param id="0" name="Object">Knob</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-22" name="Set angle toward position" type="Knob">
+                                    <param id="0" name="X">Touch.AbsoluteX</param>
+                                    <param id="1" name="Y">Touch.AbsoluteY</param>
+                                </action>
+                                <action id="-18" name="Rotate clockwise" type="Knob">
+                                    <param id="0" name="Degrees">90</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <comment>snap to ends of range</comment>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-13" name="Is between angles" type="Knob">
+                                            <param id="0" name="First angle">135</param>
+                                            <param id="1" name="Second angle">180</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-8" name="Set angle" type="Knob">
+                                            <param id="0" name="Angle">135</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-13" name="Is between angles" type="Knob">
+                                            <param id="0" name="First angle">180</param>
+                                            <param id="1" name="Second angle">360-135</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-8" name="Set angle" type="Knob">
+                                            <param id="0" name="Angle">360-135</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <comment>calculate value</comment>
+                                <event-block>
+                                    <conditions />
+                                    <actions>
+                                        <action id="-19" name="Rotate counter-clockwise" type="Knob">
+                                            <param id="0" name="Degrees">225</param>
+                                        </action>
+                                        <action id="-10" name="Set value" type="Knob">
+                                            <param id="0" name="Instance variable">value</param>
+                                            <param id="1" name="Value">round(Knob.min+((Knob.max-Knob.min)/270)*Knob.Angle)</param>
+                                        </action>
+                                        <action id="-18" name="Rotate clockwise" type="Knob">
+                                            <param id="0" name="Degrees">225</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>end dragging knob</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="1" name="On any touch end" type="Touch" />
+                        <condition id="-7" name="Compare instance variable" type="Knob">
+                            <param id="0" name="Instance variable">touch</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">Touch.TouchIndex</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" type="Knob">
+                            <param id="0" name="Instance variable">touch</param>
+                            <param id="1" name="Value">-1</param>
+                        </action>
+                        <action id="-9" name="Set value" type="System">
+                            <param id="0" name="Variable">g_dragging</param>
+                            <param id="1" name="Value">0</param>
+                        </action>
+                        <action id="0" name="Call function" type="Function">
+                            <param id="0" name="Name">&quot;Execute&quot;</param>
+                            <param id="1" name="Parameter {n}">&quot;sampler.setSynthParam(&quot;&amp;g_nSynth&amp;&quot;,&apos;&quot;&amp;Knob.name&amp;&quot;&apos;,&quot;&amp;Knob.value&amp;&quot;)&quot;</param>
+                        </action>
+                        <action id="0" name="Call function" type="Function">
+                            <param id="0" name="Name">&quot;SetKnobValue&quot;</param>
+                            <param id="1" name="Parameter {n}">Knob.name</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>set position of knob</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="0" name="On function" type="Function">
+                            <param id="0" name="Name">&quot;SetKnobValue&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-7" name="Compare instance variable" type="Knob">
+                                    <param id="0" name="Instance variable">name</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">Function.Param(0)</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="0" name="Execute" type="CallJS">
+                                    <param id="0" name="Value">&quot;sampler.getSynthParam(&quot;&amp;g_nSynth&amp;&quot;,&apos;&quot;&amp;Knob.name&amp;&quot;&apos;)&quot;</param>
+                                </action>
+                                <action id="-8" name="Set angle" type="Knob">
+                                    <param id="0" name="Angle">-135</param>
+                                </action>
+                                <action id="-18" name="Rotate clockwise" type="Knob">
+                                    <param id="0" name="Degrees">270*(abs( (int(CallJS.ReadExecutionReturn)-Knob.min))/(Knob.max-Knob.min))</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-group>
+        <event-group collapsed="1" description="" title="Keyboard">
+            <sub-events>
+                <event-block>
+                    <conditions>
+                        <condition id="-25" name="On loading finished" type="System" />
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-10" name="For" type="System">
+                                    <param id="0" name="Name">&quot;t&quot;</param>
+                                    <param id="1" name="Start index">0</param>
+                                    <param id="2" name="End index">len(g_keyboardKeys)</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <event-block>
+                    <conditions>
+                        <condition id="3" name="On touched object" type="Touch">
+                            <param id="0" name="Object">Key</param>
+                        </condition>
+                        <condition id="-14" name="Compare variable" type="System">
+                            <param id="0" name="Variable">g_dragging</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" type="Key">
+                            <param id="0" name="Instance variable">downfor</param>
+                            <param id="1" name="Value">10</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <comment>is current synth is muted, unmute it</comment>
+                        <event-block>
+                            <conditions>
+                                <condition id="-8" name="Compare two values" type="System">
+                                    <param id="0" name="First value">SynthMuteArray.At(g_nSynth)</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Second value">1</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="5" name="Set frame" type="SynthMute">
+                                    <param id="0" name="Frame number">0</param>
+                                </action>
+                                <action id="2" name="Set at X" type="SynthMuteArray">
+                                    <param id="0" name="X">g_nSynth</param>
+                                    <param id="1" name="Value">0</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block>
+                            <conditions />
+                            <actions>
+                                <action id="0" name="Call function" type="Function">
+                                    <param id="0" name="Name">&quot;SetAndPlayNote&quot;</param>
+                                    <param id="1" name="Parameter {n}">Key.key</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>keyboard control</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="1" name="On any key pressed" type="Keyboard" />
+                        <condition id="-14" name="Compare variable" type="System">
+                            <param id="0" name="Variable">g_dragging</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-10" name="For" type="System">
+                                    <param id="0" name="Name">&quot;t&quot;</param>
+                                    <param id="1" name="Start index">0</param>
+                                    <param id="2" name="End index">len(g_keyboardKeys)</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-8" name="Compare two values" type="System">
+                                            <param id="0" name="First value">int(tokenat(g_KeyboardCodes,loopindex(&quot;t&quot;),&quot;|&quot;))</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Second value">Keyboard.LastKeyCode</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions />
+                                    <sub-events>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-7" name="Compare instance variable" type="Key">
+                                                    <param id="0" name="Instance variable">key</param>
+                                                    <param id="1" name="Comparison">0</param>
+                                                    <param id="2" name="Value">loopindex(&quot;t&quot;)</param>
+                                                </condition>
+                                            </conditions>
+                                            <actions>
+                                                <action id="-10" name="Set value" type="Key">
+                                                    <param id="0" name="Instance variable">downfor</param>
+                                                    <param id="1" name="Value">10</param>
+                                                </action>
+                                                <action id="0" name="Call function" type="Function">
+                                                    <param id="0" name="Name">&quot;SetAndPlayNote&quot;</param>
+                                                    <param id="1" name="Parameter {n}">Key.key</param>
+                                                </action>
+                                                <action id="-24" name="Stop loop" type="System" />
+                                            </actions>
+                                        </event-block>
+                                    </sub-events>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-group>
+        <event-group description="" title="Mode">
+            <sub-events>
+                <event-block>
+                    <conditions>
+                        <condition id="3" name="On touched object" type="Touch">
+                            <param id="0" name="Object">PlayButton</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-14" name="Compare variable" type="System">
+                                    <param id="0" name="Variable">g_mode</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">&quot;free&quot;</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-10" name="For" type="System">
+                                            <param id="0" name="Name">&quot;synth&quot;</param>
+                                            <param id="1" name="Start index">0</param>
+                                            <param id="2" name="End index">9</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="2" name="Set at X" type="CurrentPattern">
+                                            <param id="0" name="X">loopindex(&quot;synth&quot;)</param>
+                                            <param id="1" name="Value">0</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <event-block>
+                                    <conditions />
+                                    <actions>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">g_nStep</param>
+                                            <param id="1" name="Value">0</param>
+                                        </action>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Value">&quot;playing&quot;</param>
+                                        </action>
+                                        <action id="5" name="Set frame" type="PlayButton">
+                                            <param id="0" name="Frame number">1</param>
+                                        </action>
+                                        <action id="0" name="Call function" type="Function">
+                                            <param id="0" name="Name">&quot;RecallPattern&quot;</param>
+                                            <param id="1" name="Parameter {n}"></param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                        <event-block>
+                            <conditions>
+                                <condition id="-22" name="Else" type="System" />
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">&quot;playing&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Value">&quot;free&quot;</param>
+                                        </action>
+                                        <action id="5" name="Set frame" type="PlayButton">
+                                            <param id="0" name="Frame number">0</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-group>
+        <event-group description="" title="Transport">
+            <sub-events>
+                <comment>user sets pattern</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="3" name="On touched object" type="Touch">
+                            <param id="0" name="Object">Pattern</param>
+                        </condition>
+                        <condition id="-14" name="Compare variable" type="System">
+                            <param id="0" name="Variable">g_dragging</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-14" name="Compare variable" type="System">
+                                    <param id="0" name="Variable">g_mode</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">&quot;free&quot;</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" type="System">
+                                    <param id="0" name="Variable">g_mode</param>
+                                    <param id="1" name="Value">&quot;setpattern&quot;</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-11" name="For Each" type="System">
+                                            <param id="0" name="Object">Step</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Set text" type="StepLabel">
+                                            <param id="0" name="Text">&quot;&quot;&amp;Step.step+1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                        <event-block>
+                            <conditions>
+                                <condition id="-22" name="Else" type="System" />
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">&quot;setpattern&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Call function" type="Function">
+                                            <param id="0" name="Name">&quot;RecallPattern&quot;</param>
+                                            <param id="1" name="Parameter {n}">CurrentPattern.At(g_nSynth)</param>
+                                        </action>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Value">&quot;free&quot;</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>user sets loopin/out</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="3" name="On touched object" type="Touch">
+                            <param id="0" name="Object">PatternLoop</param>
+                        </condition>
+                        <condition id="-14" name="Compare variable" type="System">
+                            <param id="0" name="Variable">g_dragging</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-14" name="Compare variable" type="System">
+                                    <param id="0" name="Variable">g_mode</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">&quot;free&quot;</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" type="System">
+                                    <param id="0" name="Variable">g_mode</param>
+                                    <param id="1" name="Value">&quot;setpatternloop&quot;&amp;PatternLoop.AnimationFrame</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <comment>put numbers on step buttons</comment>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-11" name="For Each" type="System">
+                                            <param id="0" name="Object">Step</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Set text" type="StepLabel">
+                                            <param id="0" name="Text">&quot;&quot;&amp;Step.step+1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                        <event-block>
+                            <conditions>
+                                <condition id="-22" name="Else" type="System" />
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-8" name="Compare two values" type="System">
+                                            <param id="0" name="First value">left(g_mode,len(&quot;setpatternloop&quot;))</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Second value">&quot;setpatternloop&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Call function" type="Function">
+                                            <param id="0" name="Name">&quot;RecallPattern&quot;</param>
+                                            <param id="1" name="Parameter {n}">CurrentPattern.At(g_nSynth)</param>
+                                        </action>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Value">&quot;free&quot;</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>set up array of step button IDs</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="-25" name="On loading finished" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Set size" type="StepButtonId">
+                            <param id="0" name="Width">16</param>
+                            <param id="1" name="Height">1</param>
+                            <param id="2" name="Depth">1</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <comment>set up array of step button IDs</comment>
+                        <event-block>
+                            <conditions>
+                                <condition id="-10" name="For" type="System">
+                                    <param id="0" name="Name">&quot;t&quot;</param>
+                                    <param id="1" name="Start index">0</param>
+                                    <param id="2" name="End index">16</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-11" name="For Each" type="System">
+                                            <param id="0" name="Object">Step</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions />
+                                    <sub-events>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-7" name="Compare instance variable" type="Step">
+                                                    <param id="0" name="Instance variable">step</param>
+                                                    <param id="1" name="Comparison">0</param>
+                                                    <param id="2" name="Value">loopindex(&quot;t&quot;)</param>
+                                                </condition>
+                                            </conditions>
+                                            <actions>
+                                                <action id="2" name="Set at X" type="StepButtonId">
+                                                    <param id="0" name="X">loopindex(&quot;t&quot;)</param>
+                                                    <param id="1" name="Value">Step.UID</param>
+                                                </action>
+                                                <action id="0" name="Call function" type="Function">
+                                                    <param id="0" name="Name">&quot;SetStep&quot;</param>
+                                                    <param id="1" name="Parameter {n}">loopindex(&quot;t&quot;){###}-1</param>
+                                                </action>
+                                            </actions>
+                                        </event-block>
+                                    </sub-events>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                        <comment>set bpm text</comment>
+                        <event-block>
+                            <conditions />
+                            <actions>
+                                <action id="0" name="Set text" type="BpmText">
+                                    <param id="0" name="Text">&quot;&quot;&amp;g_bpm</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>play patern if we are stepping</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="-14" name="Compare variable" type="System">
+                            <param id="0" name="Variable">g_mode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">&quot;playing&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <comment>inc step</comment>
+                        <event-block>
+                            <conditions>
+                                <condition id="-6" name="Every X seconds" type="System">
+                                    <param id="0" name="Interval (seconds)">(60 / g_bpm)/4</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <comment>wrap step back to 16</comment>
+                                <variable constant="0" name="incPattern" static="0" type="number">0</variable>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" type="System">
+                                            <param id="0" name="Variable">g_nStep</param>
+                                            <param id="1" name="Comparison">5</param>
+                                            <param id="2" name="Value">16</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">g_nStep</param>
+                                            <param id="1" name="Value">0</param>
+                                        </action>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">incPattern</param>
+                                            <param id="1" name="Value">1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Pick by unique ID" type="Step">
+                                            <param id="0" name="Unique ID">StepButtonId.At(g_nStep)</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-10" name="Set value" type="Step">
+                                            <param id="0" name="Instance variable">downfor</param>
+                                            <param id="1" name="Value">8</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-10" name="For" type="System">
+                                            <param id="0" name="Name">&quot;synth&quot;</param>
+                                            <param id="1" name="Start index">0</param>
+                                            <param id="2" name="End index">9</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions />
+                                    <sub-events>
+                                        <comment>inc patterns if we just loop round from step 16 to step 1</comment>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-14" name="Compare variable" type="System">
+                                                    <param id="0" name="Variable">incPattern</param>
+                                                    <param id="1" name="Comparison">0</param>
+                                                    <param id="2" name="Value">1</param>
+                                                </condition>
+                                            </conditions>
+                                            <actions>
+                                                <action id="2" name="Set at X" type="CurrentPattern">
+                                                    <param id="0" name="X">loopindex(&quot;synth&quot;)</param>
+                                                    <param id="1" name="Value">CurrentPattern.At(loopindex(&quot;synth&quot;))+1</param>
+                                                </action>
+                                            </actions>
+                                            <sub-events>
+                                                <comment>wrap patterns to loops</comment>
+                                                <event-block>
+                                                    <conditions>
+                                                        <condition id="-8" name="Compare two values" type="System">
+                                                            <param id="0" name="First value">CurrentPattern.At(loopindex(&quot;synth&quot;))</param>
+                                                            <param id="1" name="Comparison">4</param>
+                                                            <param id="2" name="Second value">PatternLoops.At(loopindex(&quot;synth&quot;),1)</param>
+                                                        </condition>
+                                                    </conditions>
+                                                    <actions>
+                                                        <action id="2" name="Set at X" type="CurrentPattern">
+                                                            <param id="0" name="X">loopindex(&quot;synth&quot;)</param>
+                                                            <param id="1" name="Value">PatternLoops.At(loopindex(&quot;synth&quot;),0)</param>
+                                                        </action>
+                                                    </actions>
+                                                </event-block>
+                                                <comment>if we just updated pattern for current synth, recall it to redraw gui</comment>
+                                                <event-block>
+                                                    <conditions>
+                                                        <condition id="-8" name="Compare two values" type="System">
+                                                            <param id="0" name="First value">g_nSynth</param>
+                                                            <param id="1" name="Comparison">0</param>
+                                                            <param id="2" name="Second value">loopindex(&quot;synth&quot;)</param>
+                                                        </condition>
+                                                    </conditions>
+                                                    <actions>
+                                                        <action id="0" name="Call function" type="Function">
+                                                            <param id="0" name="Name">&quot;RecallPattern&quot;</param>
+                                                            <param id="1" name="Parameter {n}"></param>
+                                                        </action>
+                                                    </actions>
+                                                </event-block>
+                                            </sub-events>
+                                        </event-block>
+                                        <comment>play the note</comment>
+                                        <event-block>
+                                            <conditions />
+                                            <actions>
+                                                <action id="0" name="Call function" type="Function">
+                                                    <param id="0" name="Name">&quot;PlayNote&quot;</param>
+                                                    <param id="1" name="Parameter {n}">loopindex(&quot;synth&quot;){###}StepArray.At(loopindex(&quot;synth&quot;),CurrentPattern.At(loopindex(&quot;synth&quot;)),g_nStep)</param>
+                                                </action>
+                                            </actions>
+                                        </event-block>
+                                    </sub-events>
+                                </event-block>
+                                <event-block>
+                                    <conditions />
+                                    <actions>
+                                        <action id="-10" name="Add to" type="System">
+                                            <param id="0" name="Variable">g_nStep</param>
+                                            <param id="1" name="Value">1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>speed up down</comment>
+                <event-block collapsed="1">
+                    <conditions>
+                        <condition id="3" name="On touched object" type="Touch">
+                            <param id="0" name="Object">BpmButton</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="3" name="Compare frame" type="BpmButton">
+                                    <param id="0" name="Comparison">0</param>
+                                    <param id="1" name="Number">0</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-11" name="Subtract from" type="System">
+                                    <param id="0" name="Variable">g_bpm</param>
+                                    <param id="1" name="Value">1</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block>
+                            <conditions>
+                                <condition id="3" name="Compare frame" type="BpmButton">
+                                    <param id="0" name="Comparison">0</param>
+                                    <param id="1" name="Number">1</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-10" name="Add to" type="System">
+                                    <param id="0" name="Variable">g_bpm</param>
+                                    <param id="1" name="Value">1</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block>
+                            <conditions />
+                            <actions>
+                                <action id="0" name="Set text" type="BpmText">
+                                    <param id="0" name="Text">&quot;&quot;&amp;g_bpm</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-group>
+        <event-group description="" title="Stepper">
+            <sub-events>
+                <event-block collapsed="1">
+                    <conditions>
+                        <condition id="3" name="On touched object" type="Touch">
+                            <param id="0" name="Object">Step</param>
+                        </condition>
+                        <condition id="-14" name="Compare variable" type="System">
+                            <param id="0" name="Variable">g_dragging</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <comment>first click of a step button</comment>
+                        <event-block>
+                            <conditions>
+                                <condition id="-14" name="Compare variable" type="System">
+                                    <param id="0" name="Variable">g_mode</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">&quot;free&quot;</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" type="System">
+                                    <param id="0" name="Variable">g_nStep</param>
+                                    <param id="1" name="Value">Step.step</param>
+                                </action>
+                                <action id="-9" name="Set value" type="System">
+                                    <param id="0" name="Variable">g_mode</param>
+                                    <param id="1" name="Value">&quot;setstep&quot;</param>
+                                </action>
+                                <action id="5" name="Set frame" type="Step">
+                                    <param id="0" name="Frame number">1</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block>
+                            <conditions>
+                                <condition id="-22" name="Else" type="System" />
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <comment>click on a stap while in setstep mode</comment>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">&quot;setstep&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions />
+                                    <sub-events>
+                                        <comment>same step: do a rest</comment>
+                                        <variable constant="0" name="swapStep" static="0" type="number">0</variable>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-8" name="Compare two values" type="System">
+                                                    <param id="0" name="First value">g_nStep</param>
+                                                    <param id="1" name="Comparison">0</param>
+                                                    <param id="2" name="Second value">Step.step</param>
+                                                </condition>
+                                            </conditions>
+                                            <actions>
+                                                <action id="0" name="Call function" type="Function">
+                                                    <param id="0" name="Name">&quot;SetStep&quot;</param>
+                                                    <param id="1" name="Parameter {n}">Step.step{###}-1</param>
+                                                </action>
+                                                <action id="5" name="Set frame" type="Step">
+                                                    <param id="0" name="Frame number">0</param>
+                                                </action>
+                                                <action id="-9" name="Set value" type="System">
+                                                    <param id="0" name="Variable">g_mode</param>
+                                                    <param id="1" name="Value">&quot;free&quot;</param>
+                                                </action>
+                                            </actions>
+                                        </event-block>
+                                        <comment>select a different step (deselect this one first)</comment>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-22" name="Else" type="System" />
+                                            </conditions>
+                                            <actions>
+                                                <action id="-9" name="Set value" type="System">
+                                                    <param id="0" name="Variable">swapStep</param>
+                                                    <param id="1" name="Value">g_nStep</param>
+                                                </action>
+                                                <action id="-9" name="Set value" type="System">
+                                                    <param id="0" name="Variable">g_nStep</param>
+                                                    <param id="1" name="Value">Step.step</param>
+                                                </action>
+                                                <action id="5" name="Set frame" type="Step">
+                                                    <param id="0" name="Frame number">1</param>
+                                                </action>
+                                                <action id="-9" name="Set value" type="System">
+                                                    <param id="0" name="Variable">g_mode</param>
+                                                    <param id="1" name="Value">&quot;free&quot;</param>
+                                                </action>
+                                            </actions>
+                                            <sub-events>
+                                                <comment>deselect old step</comment>
+                                                <event-block>
+                                                    <conditions>
+                                                        <condition id="-14" name="Pick by unique ID" type="Step">
+                                                            <param id="0" name="Unique ID">StepButtonId.At(swapStep)</param>
+                                                        </condition>
+                                                    </conditions>
+                                                    <actions>
+                                                        <action id="5" name="Set frame" type="Step">
+                                                            <param id="0" name="Frame number">0</param>
+                                                        </action>
+                                                    </actions>
+                                                </event-block>
+                                            </sub-events>
+                                        </event-block>
+                                    </sub-events>
+                                </event-block>
+                                <comment>set pattern</comment>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">&quot;setpattern&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="2" name="Set at X" type="CurrentPattern">
+                                            <param id="0" name="X">g_nSynth</param>
+                                            <param id="1" name="Value">Step.step</param>
+                                        </action>
+                                        <action id="5" name="Set frame" type="Step">
+                                            <param id="0" name="Frame number">0</param>
+                                        </action>
+                                        <action id="0" name="Call function" type="Function">
+                                            <param id="0" name="Name">&quot;RecallPattern&quot;</param>
+                                            <param id="1" name="Parameter {n}">Step.step</param>
+                                        </action>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">g_mode</param>
+                                            <param id="1" name="Value">&quot;free&quot;</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <comment>set loopin/out</comment>
+                                <variable constant="0" name="inout" static="0" type="number">0</variable>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-8" name="Compare two values" type="System">
+                                            <param id="0" name="First value">left(g_mode,len(&quot;setpatternloop&quot;))</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Second value">&quot;setpatternloop&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-9" name="Set value" type="System">
+                                            <param id="0" name="Variable">inout</param>
+                                            <param id="1" name="Value">int(mid(g_mode,len(&quot;setpatternloop&quot;),2))</param>
+                                        </action>
+                                    </actions>
+                                    <sub-events>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-8" name="Compare two values" type="System">
+                                                    <param id="0" name="First value">inout</param>
+                                                    <param id="1" name="Comparison">0</param>
+                                                    <param id="2" name="Second value">0</param>
+                                                </condition>
+                                            </conditions>
+                                            <actions />
+                                            <sub-events>
+                                                <event-block>
+                                                    <conditions>
+                                                        <condition id="-8" name="Compare two values" type="System">
+                                                            <param id="0" name="First value">Step.step</param>
+                                                            <param id="1" name="Comparison">3</param>
+                                                            <param id="2" name="Second value">PatternLoops.At(g_nSynth,1)</param>
+                                                        </condition>
+                                                    </conditions>
+                                                    <actions>
+                                                        <action id="3" name="Set at XY" type="PatternLoops">
+                                                            <param id="0" name="X">g_nSynth</param>
+                                                            <param id="1" name="Y">0</param>
+                                                            <param id="2" name="Value">Step.step</param>
+                                                        </action>
+                                                    </actions>
+                                                </event-block>
+                                            </sub-events>
+                                        </event-block>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-22" name="Else" type="System" />
+                                            </conditions>
+                                            <actions />
+                                            <sub-events>
+                                                <event-block>
+                                                    <conditions>
+                                                        <condition id="-8" name="Compare two values" type="System">
+                                                            <param id="0" name="First value">Step.step</param>
+                                                            <param id="1" name="Comparison">5</param>
+                                                            <param id="2" name="Second value">PatternLoops.At(g_nSynth,0)</param>
+                                                        </condition>
+                                                    </conditions>
+                                                    <actions>
+                                                        <action id="3" name="Set at XY" type="PatternLoops">
+                                                            <param id="0" name="X">g_nSynth</param>
+                                                            <param id="1" name="Y">1</param>
+                                                            <param id="2" name="Value">Step.step</param>
+                                                        </action>
+                                                    </actions>
+                                                </event-block>
+                                            </sub-events>
+                                        </event-block>
+                                        <event-block>
+                                            <conditions />
+                                            <actions>
+                                                <action id="5" name="Set frame" type="Step">
+                                                    <param id="0" name="Frame number">0</param>
+                                                </action>
+                                                <action id="0" name="Call function" type="Function">
+                                                    <param id="0" name="Name">&quot;RecallPattern&quot;</param>
+                                                    <param id="1" name="Parameter {n}">Step.step</param>
+                                                </action>
+                                                <action id="-9" name="Set value" type="System">
+                                                    <param id="0" name="Variable">g_mode</param>
+                                                    <param id="1" name="Value">&quot;free&quot;</param>
+                                                </action>
+                                            </actions>
+                                        </event-block>
+                                    </sub-events>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <event-block>
+                    <conditions>
+                        <condition id="0" name="On function" type="Function">
+                            <param id="0" name="Name">&quot;SetStep&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-14" name="Pick by unique ID" type="Step">
+                                    <param id="0" name="Unique ID">StepButtonId.At(Function.Param(0))</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="4" name="Set at XYZ" type="StepArray">
+                                    <param id="0" name="X">g_nSynth</param>
+                                    <param id="1" name="Y">CurrentPattern.At(g_nSynth)</param>
+                                    <param id="2" name="Z">Function.Param(0)</param>
+                                    <param id="3" name="Value">Function.Param(1)</param>
+                                </action>
+                                <action id="0" name="Call function" type="Function">
+                                    <param id="0" name="Name">&quot;RecallPattern&quot;</param>
+                                    <param id="1" name="Parameter {n}">CurrentPattern.At(g_nSynth)</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>flash button if in setpattern mode</comment>
+                <event-block collapsed="1">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" type="System">
+                            <param id="0" name="Variable">g_mode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">&quot;setpattern&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-6" name="Every X seconds" type="System">
+                                    <param id="0" name="Interval (seconds)">0.3</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Pick by unique ID" type="Step">
+                                            <param id="0" name="Unique ID">StepButtonId.At(CurrentPattern.At(g_nSynth))</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="5" name="Set frame" type="Step">
+                                            <param id="0" name="Frame number">Step.AnimationFrame=0?1:0</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>flash if on setpattern loop mode</comment>
+                <event-block collapsed="1">
+                    <conditions>
+                        <condition id="-8" name="Compare two values" type="System">
+                            <param id="0" name="First value">left(g_mode,len(&quot;setpatternloop&quot;))</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Second value">&quot;setpatternloop&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-6" name="Every X seconds" type="System">
+                                    <param id="0" name="Interval (seconds)">0.3</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Pick by unique ID" type="Step">
+                                            <param id="0" name="Unique ID">StepButtonId.At(PatternLoops.At(g_nSynth,int(right(g_mode,1))))</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="5" name="Set frame" type="Step">
+                                            <param id="0" name="Frame number">Step.AnimationFrame=0?1:0</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>setup step array</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="-25" name="On loading finished" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Set size" type="StepArray">
+                            <param id="0" name="Width">10</param>
+                            <param id="1" name="Height">16</param>
+                            <param id="2" name="Depth">16</param>
+                        </action>
+                        <action id="1" name="Set size" type="CurrentPattern">
+                            <param id="0" name="Width">10</param>
+                            <param id="1" name="Height">1</param>
+                            <param id="2" name="Depth">1</param>
+                        </action>
+                        <action id="1" name="Set size" type="PatternLoops">
+                            <param id="0" name="Width">10</param>
+                            <param id="1" name="Height">2</param>
+                            <param id="2" name="Depth">1</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-10" name="For" type="System">
+                                    <param id="0" name="Name">&quot;synth&quot;</param>
+                                    <param id="1" name="Start index">0</param>
+                                    <param id="2" name="End index">9</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="2" name="Set at X" type="CurrentPattern">
+                                    <param id="0" name="X">loopindex(&quot;synth&quot;)</param>
+                                    <param id="1" name="Value">0</param>
+                                </action>
+                                <action id="3" name="Set at XY" type="PatternLoops">
+                                    <param id="0" name="X">loopindex(&quot;synth&quot;)</param>
+                                    <param id="1" name="Y">0</param>
+                                    <param id="2" name="Value">0</param>
+                                </action>
+                                <action id="3" name="Set at XY" type="PatternLoops">
+                                    <param id="0" name="X">loopindex(&quot;synth&quot;)</param>
+                                    <param id="1" name="Y">1</param>
+                                    <param id="2" name="Value">0</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-10" name="For" type="System">
+                                            <param id="0" name="Name">&quot;pattern&quot;</param>
+                                            <param id="1" name="Start index">0</param>
+                                            <param id="2" name="End index">15</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions />
+                                    <sub-events>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-10" name="For" type="System">
+                                                    <param id="0" name="Name">&quot;step&quot;</param>
+                                                    <param id="1" name="Start index">0</param>
+                                                    <param id="2" name="End index">15</param>
+                                                </condition>
+                                            </conditions>
+                                            <actions>
+                                                <action id="4" name="Set at XYZ" type="StepArray">
+                                                    <param id="0" name="X">loopindex(&quot;synth&quot;)</param>
+                                                    <param id="1" name="Y">loopindex(&quot;pattern&quot;)</param>
+                                                    <param id="2" name="Z">loopindex(&quot;step&quot;)</param>
+                                                    <param id="3" name="Value">-1</param>
+                                                </action>
+                                            </actions>
+                                        </event-block>
+                                    </sub-events>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>function to set the pattern</comment>
+                <event-block>
+                    <conditions>
+                        <condition id="0" name="On function" type="Function">
+                            <param id="0" name="Name">&quot;RecallPattern&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Set text" type="PatternText">
+                            <param id="0" name="Text">&quot;&quot;&amp;CurrentPattern.At(g_nSynth)+1</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <comment>set text on patternloop buttons</comment>
+                        <event-block>
+                            <conditions>
+                                <condition id="-11" name="For Each" type="System">
+                                    <param id="0" name="Object">PatternLoop</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="0" name="Set text" type="PatternLoopText">
+                                    <param id="0" name="Text">&quot;&quot;&amp;PatternLoops.At(g_nSynth,PatternLoop.AnimationFrame)+1</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block>
+                            <conditions>
+                                <condition id="-10" name="For" type="System">
+                                    <param id="0" name="Name">&quot;t&quot;</param>
+                                    <param id="1" name="Start index">0</param>
+                                    <param id="2" name="End index">15</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-14" name="Pick by unique ID" type="Step">
+                                            <param id="0" name="Unique ID">StepButtonId.At(loopindex(&quot;t&quot;))</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-10" name="Set value" type="Step">
+                                            <param id="0" name="Instance variable">key</param>
+                                            <param id="1" name="Value">StepArray.At(g_nSynth,CurrentPattern.At(g_nSynth),loopindex(&quot;t&quot;))</param>
+                                        </action>
+                                        <action id="0" name="Set text" type="StepLabel">
+                                            <param id="0" name="Text">&quot;&quot;&amp;Step.key</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-group>
+        <event-group collapsed="1" description="" title="Animation">
+            <sub-events>
+                <event-block>
+                    <conditions>
+                        <condition id="-1" name="Every tick" type="System" />
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block>
+                            <conditions>
+                                <condition id="-11" name="For Each" type="System">
+                                    <param id="0" name="Object">Key</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-7" name="Compare instance variable" type="Key">
+                                            <param id="0" name="Instance variable">downfor</param>
+                                            <param id="1" name="Comparison">4</param>
+                                            <param id="2" name="Value">0</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="5" name="Set frame" type="Key">
+                                            <param id="0" name="Frame number">1</param>
+                                        </action>
+                                        <action id="-12" name="Subtract from" type="Key">
+                                            <param id="0" name="Instance variable">downfor</param>
+                                            <param id="1" name="Value">1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-22" name="Else" type="System" />
+                                    </conditions>
+                                    <actions>
+                                        <action id="5" name="Set frame" type="Key">
+                                            <param id="0" name="Frame number">0</param>
+                                        </action>
+                                        <action id="-10" name="Set value" type="Key">
+                                            <param id="0" name="Instance variable">downfor</param>
+                                            <param id="1" name="Value">0</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                        <event-block any="1">
+                            <conditions>
+                                <condition id="-14" name="Compare variable" type="System">
+                                    <param id="0" name="Variable">g_mode</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">&quot;free&quot;</param>
+                                </condition>
+                                <condition id="-14" name="Compare variable" type="System">
+                                    <param id="0" name="Variable">g_mode</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">&quot;playing&quot;</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <event-block>
+                                    <conditions>
+                                        <condition id="-11" name="For Each" type="System">
+                                            <param id="0" name="Object">Step</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions />
+                                    <sub-events>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-7" name="Compare instance variable" type="Step">
+                                                    <param id="0" name="Instance variable">downfor</param>
+                                                    <param id="1" name="Comparison">4</param>
+                                                    <param id="2" name="Value">0</param>
+                                                </condition>
+                                            </conditions>
+                                            <actions>
+                                                <action id="5" name="Set frame" type="Step">
+                                                    <param id="0" name="Frame number">1</param>
+                                                </action>
+                                                <action id="-12" name="Subtract from" type="Step">
+                                                    <param id="0" name="Instance variable">downfor</param>
+                                                    <param id="1" name="Value">1</param>
+                                                </action>
+                                            </actions>
+                                        </event-block>
+                                        <event-block>
+                                            <conditions>
+                                                <condition id="-22" name="Else" type="System" />
+                                            </conditions>
+                                            <actions>
+                                                <action id="5" name="Set frame" type="Step">
+                                                    <param id="0" name="Frame number">0</param>
+                                                </action>
+                                                <action id="-10" name="Set value" type="Step">
+                                                    <param id="0" name="Instance variable">downfor</param>
+                                                    <param id="1" name="Value">0</param>
+                                                </action>
+                                            </actions>
+                                        </event-block>
+                                    </sub-events>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-group>
+    </events>
+</c2eventsheet>

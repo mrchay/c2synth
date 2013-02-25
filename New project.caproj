@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2project>
+    <name>New project</name>
+    <description></description>
+    <version>1.0</version>
+    <author></author>
+    <unique-id>9uqziwktwexp</unique-id>
+    <saved-with-version>11900</saved-with-version>
+    <used-plugins>
+        <plugin author="Scirra" id="AJAX" version="1">AJAX</plugin>
+        <plugin author="Scirra" id="Browser" version="1">Browser</plugin>
+        <plugin author="Scirra" id="Keyboard" version="1">Keyboard</plugin>
+        <plugin author="Scirra" id="Function" version="1">Function</plugin>
+        <plugin author="Scirra" id="Sprite" version="1">Sprite</plugin>
+        <plugin author="Scirra" id="Text" version="1">Text</plugin>
+        <plugin author="Scirra" id="Touch" version="1">Touch</plugin>
+        <plugin author="Zack0Wack0/Scirra" id="WebStorage" version="1">WebStorage</plugin>
+        <plugin author="Joe7" id="cjs" version="1">Call JS</plugin>
+        <plugin author="Scirra" id="Arr" version="1">Array</plugin>
+    </used-plugins>
+    <used-behaviors />
+    <used-effects />
+    <configurations>
+        <configuration exporter-descname="HTML5" exporter-id="html5" name="HTML5" />
+    </configurations>
+    <window-size>
+        <width>640</width>
+        <height>480</height>
+    </window-size>
+    <pixel-rounding>0</pixel-rounding>
+    <use-loader-layout>0</use-loader-layout>
+    <configuration-settings>
+        <prop name="Clear background">Yes</prop>
+        <prop name="Enable WebGL">On</prop>
+        <prop name="Fullscreen in browser">Off</prop>
+        <prop name="Hide address bar">No</prop>
+        <prop name="Loader style">Progress bar &amp; logo</prop>
+        <prop name="Preview browser">(default)</prop>
+        <prop name="Sampling">Linear</prop>
+        <prop name="Use iOS retina display">iPhone only</prop>
+    </configuration-settings>
+    <object-folder expanded="1">
+        <object-folder expanded="1" name="Synth">
+            <object-type name="Synth">
+                <plugin id="Sprite" />
+                <instance-variables>
+                    <instance-variable name="synthIndex" type="number" />
+                </instance-variables>
+                <animation-folder expanded="1">
+                    <animation framecount="1" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="5">
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                    </animation>
+                </animation-folder>
+            </object-type>
+            <object-type name="SynthTab">
+                <plugin id="Sprite" />
+                <instance-variables>
+                    <instance-variable name="synth" type="number" />
+                </instance-variables>
+                <animation-folder expanded="1">
+                    <animation framecount="2" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="0">
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                    </animation>
+                </animation-folder>
+            </object-type>
+            <object-type name="Knob">
+                <plugin id="Sprite" />
+                <instance-variables>
+                    <instance-variable name="value" type="number" />
+                    <instance-variable name="touch" type="number" />
+                    <instance-variable name="min" type="number" />
+                    <instance-variable name="max" type="number" />
+                    <instance-variable name="startX" type="number" />
+                    <instance-variable name="startY" type="number" />
+                    <instance-variable name="name" type="string" />
+                </instance-variables>
+                <animation-folder expanded="1">
+                    <animation framecount="1" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="5">
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                    </animation>
+                </animation-folder>
+            </object-type>
+            <object-type name="SynthNumber">
+                <plugin id="Text" />
+            </object-type>
+            <object-type name="SynthMute">
+                <plugin id="Sprite" />
+                <animation-folder expanded="1">
+                    <animation framecount="2" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="0">
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                    </animation>
+                </animation-folder>
+            </object-type>
+            <object-type global="1" name="SynthMuteArray">
+                <plugin id="Arr" />
+            </object-type>
+        </object-folder>
+        <object-folder expanded="1" name="Transport">
+            <object-type name="PlayButton">
+                <plugin id="Sprite" />
+                <animation-folder expanded="1">
+                    <animation framecount="2" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="0">
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                    </animation>
+                </animation-folder>
+            </object-type>
+            <object-type name="StopButton">
+                <plugin id="Sprite" />
+                <animation-folder expanded="1">
+                    <animation framecount="1" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="5">
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                    </animation>
+                </animation-folder>
+            </object-type>
+            <object-type name="BpmButton">
+                <plugin id="Sprite" />
+                <animation-folder expanded="1">
+                    <animation framecount="2" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="0">
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                    </animation>
+                </animation-folder>
+            </object-type>
+            <object-type name="BpmText">
+                <plugin id="Text" />
+            </object-type>
+        </object-folder>
+        <object-folder expanded="1" name="Stepper">
+            <object-type name="StepLabel">
+                <plugin id="Text" />
+                <container>
+                    <type>StepLabel</type>
+                    <type>Step</type>
+                </container>
+            </object-type>
+            <object-type global="1" name="StepButtonId">
+                <plugin id="Arr" />
+            </object-type>
+            <object-type name="Step">
+                <plugin id="Sprite" />
+                <instance-variables>
+                    <instance-variable name="step" type="number" />
+                    <instance-variable name="downfor" type="number" />
+                    <instance-variable name="key" type="number" />
+                </instance-variables>
+                <container>
+                    <type>StepLabel</type>
+                    <type>Step</type>
+                </container>
+                <animation-folder expanded="1">
+                    <animation framecount="2" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="0">
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                        <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                    </animation>
+                </animation-folder>
+            </object-type>
+            <object-type global="1" name="StepArray">
+                <plugin id="Arr" />
+            </object-type>
+            <object-type global="1" name="CurrentPattern">
+                <plugin id="Arr" />
+            </object-type>
+            <object-type global="1" name="PatternLoops">
+                <plugin id="Arr" />
+            </object-type>
+        </object-folder>
+        <object-folder expanded="1" name="Keyboard">
+            <object-type name="Key">
+                <plugin id="Sprite" />
+                <instance-variables>
+                    <instance-variable name="key" type="number" />
+                    <instance-variable name="downfor" type="number" />
+                    <instance-variable name="step" type="number" />
+                    <instance-variable name="touch" type="number" />
+                    <instance-variable name="touchStartY" type="number" />
+                </instance-variables>
+                <container>
+                    <type>KeyText</type>
+                    <type>Key</type>
+                </container>
+                <animation-folder expanded="1">
+                    <animation framecount="2" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="5">
+                        <frame duration="1" hotspotX="0.472222" hotspotY="0.480769" />
+                        <frame duration="1" hotspotX="0.472222" hotspotY="0.480769" />
+                    </animation>
+                </animation-folder>
+            </object-type>
+            <object-type name="KeyLabel">
+                <plugin id="Text" />
+            </object-type>
+            <object-type name="KeyText">
+                <plugin id="Text" />
+                <container>
+                    <type>KeyText</type>
+                    <type>Key</type>
+                </container>
+            </object-type>
+        </object-folder>
+        <object-type name="AJAX">
+            <plugin id="AJAX" />
+        </object-type>
+        <object-type name="Browser">
+            <plugin id="Browser" />
+        </object-type>
+        <object-type name="Function">
+            <plugin id="Function" />
+        </object-type>
+        <object-type name="Touch">
+            <plugin id="Touch" />
+        </object-type>
+        <object-type name="Text2">
+            <plugin id="Text" />
+        </object-type>
+        <object-type name="WebStorage">
+            <plugin id="WebStorage" />
+        </object-type>
+        <object-type name="Keyboard">
+            <plugin id="Keyboard" />
+        </object-type>
+        <object-type global="1" name="CallJS">
+            <plugin id="cjs" />
+        </object-type>
+        <object-type name="Pattern">
+            <plugin id="Sprite" />
+            <instance-variables>
+                <instance-variable name="name" type="string" />
+            </instance-variables>
+            <animation-folder expanded="1">
+                <animation framecount="1" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="5">
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                </animation>
+            </animation-folder>
+        </object-type>
+        <object-type name="PatternText">
+            <plugin id="Text" />
+        </object-type>
+        <object-type name="PatternLoop">
+            <plugin id="Sprite" />
+            <container>
+                <type>PatternLoopText</type>
+                <type>PatternLoop</type>
+            </container>
+            <animation-folder expanded="1">
+                <animation framecount="2" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" speed="0">
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5">
+                        <collision-poly>
+                            <point x="1" y="1" />
+                            <point x="0" y="1" />
+                            <point x="0" y="0" />
+                            <point x="1" y="0" />
+                        </collision-poly>
+                    </frame>
+                </animation>
+            </animation-folder>
+        </object-type>
+        <object-type name="PatternLoopText">
+            <plugin id="Text" />
+            <container>
+                <type>PatternLoopText</type>
+                <type>PatternLoop</type>
+            </container>
+        </object-type>
+    </object-folder>
+    <families>
+        <family name="Buttons" plugin-id="Sprite">
+            <members>
+                <member>Key</member>
+                <member>Step</member>
+            </members>
+        </family>
+    </families>
+    <layout-folder expanded="1">
+        <layout>Layout 1.xml</layout>
+    </layout-folder>
+    <event-folder expanded="1">
+        <event-sheet>Event sheet 1.xml</event-sheet>
+    </event-folder>
+    <global-instances>
+        <global-instance type="Browser" />
+        <global-instance type="AJAX" />
+        <global-instance type="Function" />
+        <global-instance type="Touch">
+            <properties>
+                <use-mouse-input>Yes</use-mouse-input>
+            </properties>
+        </global-instance>
+        <global-instance type="WebStorage" />
+        <global-instance type="Keyboard" />
+    </global-instances>
+    <sounds-folder expanded="1" />
+    <music-folder expanded="1" />
+    <files-folder expanded="1">
+        <file name="inject.js" />
+        <file name="userscript.js" />
+    </files-folder>
+</c2project>
