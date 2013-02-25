@@ -1,0 +1,1 @@
+put callJS in your scirra plugins folder yo
